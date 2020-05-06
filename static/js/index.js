@@ -1,4 +1,4 @@
-// Set starting value of display_name to empty string
+// Get value of display_name from local storage
 if (!localStorage.getItem('display_name'))
 	localStorage.setItem('display_name', "");
 
