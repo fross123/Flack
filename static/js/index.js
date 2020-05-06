@@ -1,8 +1,8 @@
 // Set starting value of display_name to empty string
 if (!localStorage.getItem('display_name'))
-	localStorage.setItem('display_name', "No Name Set");
+	localStorage.setItem('display_name', "");
 
-// Load current value of  counter
+// Load current display_name
 document.addEventListener('DOMContentLoaded', () => {
 	document.querySelector('#display_name').innerHTML = localStorage.getItem('display_name');
 	
