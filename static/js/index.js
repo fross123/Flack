@@ -4,13 +4,15 @@ if (!localStorage.getItem('display_name'))
 
 // Load current display_name
 document.addEventListener('DOMContentLoaded', () => {
-	document.querySelector('#display_name').innerHTML = localStorage.getItem('display_name');
+	var display_name = localStorage.getItem('display_name');
+	
 	
 	//update display_name with text input
 	document.querySelector('#form').onsubmit = () => {
 		const name = document.querySelector('#name').value;
-		
-		document.querySelector('#display_name').innerHTML = name;
+		display_name = name;
 		localStorage.setItem('display_name', name);
 	};
+	
+	document.querySelector('#display_name').innerHTML = display_name;
 });
