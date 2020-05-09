@@ -1,18 +1,22 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Title of Page
+    Home
 {% endblock %}
 
 {% block body %}
 
-	<h1 id="display_name"></h1>
+    <div class="container">
+        <div id="body">
+            <form id="form">
+                <div class="form-group">
+                    <label for="name">Enter your name to be displayed</label>
+                    <input type="text" class="form-control" id="name" placeholder="Bobby John" />
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
 
-    <div id="body">
-        <form id="form">
-            <input id="name" autocomplete="off" autofocus placeholder="Name" type="text">
-            <input type="submit">
-        </form>
+            </form>
+        </div>
     </div>
 
 {%endblock%}

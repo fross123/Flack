@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	var display_name = localStorage.getItem('display_name');
 	var display_name_created = localStorage.getItem('display_name_created');
 
-	if (display_name_created == true) {
+	if (!display_name_created) {
 		load_page('channels');
 	}
 
@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		display_name_created = true;
 		localStorage.setItem('display_name', name);
 		localStorage.setItem('display_name_created', true);
+		load_page('channels');
+		return false;
 	};
 
 	document.querySelector('#display_name').innerHTML = display_name;
