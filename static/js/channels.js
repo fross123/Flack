@@ -5,7 +5,7 @@ let counter = 1;
 const quantity = 20;
 
 // When DOM loads, render the first 20 posts.
-document.addEventListener('load', load);
+document.addEventListener('DOMContentLoaded', load);
 
 
 // Load next set of posts.
