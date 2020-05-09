@@ -28,8 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.querySelector('#display_name').innerHTML = display_name;
 });
 
-
-
 // Update text on popping state.
 window.onpopstate = e => {
 	const data = e.state;
@@ -43,6 +41,7 @@ function load_page(name) {
 
 	// Get request for "name".
 	request.open('GET', `/${name}`);
+
 	request.onload = () => {
 		const response = request.responseText;
 		document.querySelector('#body').innerHTML = response;
@@ -52,4 +51,5 @@ function load_page(name) {
 		history.pushState({'title': name, 'text': response}, name, name);
 	};
 	request.send();
-}
+
+};

@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
@@ -19,3 +19,18 @@ def channels():
 @app.route("/display_name")
 def display_name():
     return render_template("get_display_name.html")
+
+@app.route("/posts", methods=["POST"])
+def posts():
+
+    # Get start and end point for posts to generate.
+    start = int(request.form.get("start") or 0)
+    end = int(request.form.get("end") or (start + 9))
+
+    # Generate list of posts.
+    data = []
+    for i in range(start, end + 1):
+        data.append(f"Post #{i}")
+
+    # Return list of posts.
+    return jsonify(data)
