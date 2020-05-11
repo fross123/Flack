@@ -14,11 +14,16 @@ def index():
 
 @app.route("/channels")
 def channels():
-    return render_template("channels.html")
+	return render_template("channels.html")
 
-@app.route("/display_name")
+
+@app.route("/display_name", methods=["POST"])
 def display_name():
-    return render_template("get_display_name.html")
+
+	name = request.form.get("display_name")
+
+	return jsonify({"success": True, "name": name})
+
 
 @app.route("/posts", methods=["POST"])
 def posts():
