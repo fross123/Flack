@@ -14,6 +14,7 @@ Session(app)
 
 @app.route("/")
 def index():
+
 	# Check if user has been made
 	if 'user' in session:
 		return render_template("channels.html")
@@ -26,7 +27,7 @@ def channels():
 
 @app.route("/display_name", methods=["POST"])
 def display_name():
-
+	
 	session['user'] = request.form.get("display_name")
 
 	return jsonify({"success": True, "name": session['user']})

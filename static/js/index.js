@@ -4,13 +4,11 @@ if (!localStorage.getItem('display_name')) {
 	localStorage.setItem('display_name_created', false);
 }
 
-// Load current display_name
 document.addEventListener('DOMContentLoaded', () => {
 	var display_name = localStorage.getItem('display_name');
 	var display_name_created = localStorage.getItem('display_name_created');
 
 	document.querySelector('#form').onsubmit = () => {
-
 		const request = new XMLHttpRequest();
 		const name = document.querySelector('#name').value;
 		display_name = name;
@@ -22,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		request.open('POST', '/display_name');
 
 		request.onload = () => {
-
 			const data = JSON.parse(request.responseText);
 
 			// Update the result
@@ -44,23 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		request.send(data);
 		return false;
 	};
-
-	/* update display_name with text input
-	document.querySelector('#form').onsubmit = () => {
-		const name = document.querySelector('#name').value;
-		display_name = name;
-		display_name_created = true;
-
-		localStorage.setItem('display_name', name);
-		localStorage.setItem('display_name_created', true);
-
-		load_page('channels');
-
-		return false;
-	};*/
-
-
-	//document.querySelector('#display_name').innerHTML = display_name;
 });
 
 // Update text on popping state.
