@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (data.success) {
 				const contents = `Welcome ${data.name}.`
 				document.querySelector('#display_name').innerHTML = contents;
+				location.reload();
 			}
 			else {
 				document.querySelector('#display_name').innerHTML = 'ERROR OCCURED.';
