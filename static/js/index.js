@@ -9,44 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
 	var display_name_created = localStorage.getItem('display_name_created');
 
 	// add if-else in order to send localStorage to server for return visitors
-	if (display_name_created = false) {
-		document.querySelector('#form').onsubmit = () => {
-			const request = new XMLHttpRequest();
-			const name = document.querySelector('#name').value;
-			display_name = name;
-			display_name_created = true;
-
-			localStorage.setItem('display_name', display_name);
-			localStorage.setItem('display_name_created', display_name_created);
-
-			request.open('POST', '/display_name');
-
-			request.onload = () => {
-				const data = JSON.parse(request.responseText);
-
-				// Update the result
-				if (data.success) {
-					const contents = `Welcome ${data.name}.`
-					document.querySelector('#display_name').innerHTML = contents;
-					location.reload();
-				}
-				else {
-					document.querySelector('#display_name').innerHTML = 'ERROR OCCURED.';
-				}
-			}
-
-			// Add data to Send
-			const data = new FormData();
-			data.append('display_name', display_name);
-
-			// Send request
-			request.send(data);
-			return false;
-		};
-	}
-
-	else if (display_name_created = true) {
+	
+	document.querySelector('#form').onsubmit = () => {
 		const request = new XMLHttpRequest();
+		const name = document.querySelector('#name').value;
+		display_name = name;
+		display_name_created = true;
+
+		localStorage.setItem('display_name', display_name);
+		localStorage.setItem('display_name_created', display_name_created);
 
 		request.open('POST', '/display_name');
 
@@ -71,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		// Send request
 		request.send(data);
 		return false;
-	}
+	};
 });
 
 // Update text on popping state.
