@@ -27,7 +27,6 @@ def channels():
 
 @app.route("/display_name", methods=["POST"])
 def display_name():
-
 	session['user'] = request.form.get("display_name")
 
 	return jsonify({"success": True, "name": session['user']})

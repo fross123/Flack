@@ -9,7 +9,30 @@ document.addEventListener('DOMContentLoaded', () => {
 	var display_name_created = localStorage.getItem('display_name_created');
 
 	// add if-else in order to send localStorage to server for return visitors
-	
+	if (display_name_created == true) {
+		const request = new XMLHttpRequest();
+		request.open('POST', '/display_name');
+		request.onload = () => {
+			const data = JSON.parse(request.responseText);
+
+			if (data.success) {
+				const contents = `Welcome ${data.name}.`
+				document.querySelector('#display_name').innerHTML = contents;
+				location.reload();
+			}
+			else {
+				document.querySelector('#display_name').innerHTML = 'ERROR OCCURED.';
+			}
+		}
+		// Add data to Send
+		const data = new FormData();
+		data.append('display_name', display_name);
+
+		// Send request
+		request.send(data);
+		return false;
+	}
+
 	document.querySelector('#form').onsubmit = () => {
 		const request = new XMLHttpRequest();
 		const name = document.querySelector('#name').value;
