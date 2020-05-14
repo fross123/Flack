@@ -1,9 +1,23 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    index.html
+            index.html
 {% endblock %}
 
 {% block body %}
-    <h1>Extending Layout.html</h1>
+        <div class="not_logged_in">
+            <form>
+              <div class="form-group">
+                <label>Display Name</label>
+                <input type="username" class="form-control" id="username" aria-describedby="username">
+              </div>
+
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+
+        </div>
+
+        <div class="logged_in" style="display: none;">
+            <h2>This is what being logged in looks like</h2>
+        </div>
 {% endblock %}
