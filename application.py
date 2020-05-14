@@ -8,14 +8,21 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
 display_names = []
+current_user = []
 
 @app.route("/")
 def index():
-    return render_template('index.html', display_names=display_names)
+    return render_template('index.html', display_names=display_names, current_user=current_user)
 
 @socketio.on("new_user")
 def new_user(data):
     display_name = data["display_name"]
     display_names.append(display_name)
-    
-    emit("emit_names", display_names, broadcast=True)
+    current_user.clear()
+    current_user.append(display_name)
+
+@socketio.on("returning_user")
+def returning_user(data):
+    display_name = data["display_name"]
+    current_user.clear()
+    current_user.append(display_name)
