@@ -12,14 +12,26 @@
                 <input class="form-control" id="name" placeholder="Enter Your Display Name Here">
               </div>
 
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button id="add_user_button" type="submit" class="btn btn-primary">Submit</button>
             </form>
-            <h1 id="#display_name">{{ display_names }}</h1>
-            <h2 id="current_user"></h2>
+            <h1>Server side display Names</h1>
+            <h1 id="display_name">{{ display_names }}</h1>
+            <h2>List of Current Users</h2>
+
+            <div id="current_users"></div>
 
         </div>
 
-        <div class="logged_in" style="display: none;">
+        <div class="logged_in" style="background: grey;">
             <h2>This is what being logged in looks like</h2>
+            <div>
+                <form id="messsage_form">
+                    <div class="form-group">
+                        <input class="form-control" id="message" placeholder="What would you like to say?">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
         </div>
 {% endblock %}

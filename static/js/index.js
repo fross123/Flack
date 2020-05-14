@@ -24,6 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('user_signed_in', data => {
-        document.querySelector('#current_user').innerHTML = data;
+        data.forEach(add_user);
+        const add_user_button = document.querySelector('#add_user_button');
+        add_user_button.disabled = true;
     });
 });
+
+// Add a new post with given contents to DOM.
+const user_template = Handlebars.compile(document.querySelector('#user').innerHTML);
+function add_user(contents) {
+    // Create new post.
+    const user = user_template({'contents': contents});
+
+    // Add post to DOM.
+    document.querySelector('#current_users').innerHTML += user;
+}

@@ -16,6 +16,22 @@
         <!-- socketio scripts -->
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 
+        <!-- handlebars js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+
+        <!-- Users Template -->
+        <script id="user" type="text/x-handlebars-template">
+            <div class="user">
+                <ul>
+                    <li>
+                        {% raw -%}
+                            {{ contents }}
+                        {%- endraw %}
+                    </li>
+                </ul>
+            </div>
+        </script>
+
         <!-- custom javascript -->
         <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 
