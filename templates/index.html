@@ -6,14 +6,16 @@
 
 {% block body %}
         <div class="not_logged_in">
-            <form>
+            <form id="form">
               <div class="form-group">
                 <label>Display Name</label>
-                <input type="username" class="form-control" id="username" aria-describedby="username">
+                <input class="form-control" id="name" placeholder="Enter Your Display Name Here">
               </div>
 
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
+            <h1>{{ display_names }}</h1>
+            <h1 id="#display_name"></h1>
 
         </div>
 

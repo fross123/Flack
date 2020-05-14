@@ -17,4 +17,5 @@ def index():
 def new_user(data):
     display_name = data["display_name"]
     display_names.append(display_name)
-    #emit("new_user", display_names, broadcast=True)
+    
+    emit("emit_names", display_names, broadcast=True)
