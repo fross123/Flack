@@ -1,94 +1,75 @@
-// Get value of display_name from local storage
 if (!localStorage.getItem('display_name')) {
-	localStorage.setItem('display_name', "");
-	localStorage.setItem('display_name_created', false);
+    localStorage.setItem('display_name', "");
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-	var display_name = localStorage.getItem('display_name');
-	var display_name_created = localStorage.getItem('display_name_created');
 
-	// add if-else in order to send localStorage to server for return visitors
-	if (display_name_created == true) {
-		const request = new XMLHttpRequest();
-		request.open('POST', '/display_name');
-		request.onload = () => {
-			const data = JSON.parse(request.responseText);
+    var display_name = localStorage.getItem('display_name');
+    var channel_name = "";
 
-			if (data.success) {
-				const contents = `Welcome ${data.name}.`
-				document.querySelector('#display_name').innerHTML = contents;
-				location.reload();
-			}
-			else {
-				document.querySelector('#display_name').innerHTML = 'ERROR OCCURED.';
-			}
-		}
-		// Add data to Send
-		const data = new FormData();
-		data.append('display_name', display_name);
+    // Connect to websocket
+    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
-		// Send request
-		request.send(data);
-		return false;
-	}
+    socket.on('connect', () => {
+        if (display_name != "") {
+            socket.emit('returning_user', {display_name: localStorage.getItem('display_name')});
+        }
+        else if (display_name == "") {
+            const add_channel_button = document.querySelector("#add_channel_button");
+            add_channel_button.disabled = true;
+        }
+    });
 
-	document.querySelector('#form').onsubmit = () => {
-		const request = new XMLHttpRequest();
-		const name = document.querySelector('#name').value;
-		display_name = name;
-		display_name_created = true;
+    socket.on('user_signed_in', data => {
+        // Add user to dom
+        data.forEach(add_user);
 
-		localStorage.setItem('display_name', display_name);
-		localStorage.setItem('display_name_created', display_name_created);
+        // disable submit new user button
+        const add_user_button = document.querySelector('#add_user_button');
+        add_user_button.disabled = true;
 
-		request.open('POST', '/display_name');
+        // enable create channel button
+        const add_channel_button = document.querySelector("#add_channel_button");
+        add_channel_button.disabled = false;
+    });
 
-		request.onload = () => {
-			const data = JSON.parse(request.responseText);
+    socket.on('channel_created', data => {
+        // add channel to channel List
+        data.forEach(add_channel);
+    });
 
-			// Update the result
-			if (data.success) {
-				const contents = `Welcome ${data.name}.`
-				document.querySelector('#display_name').innerHTML = contents;
-				location.reload();
-			}
-			else {
-				document.querySelector('#display_name').innerHTML = 'ERROR OCCURED.';
-			}
-		}
+    document.querySelector('#form').onsubmit = () => {
+        const name = document.querySelector('#name').value;
+        display_name = name;
 
-		// Add data to Send
-		const data = new FormData();
-		data.append('display_name', display_name);
+        localStorage.setItem('display_name', display_name);
+        socket.emit('new_user', {display_name: display_name});
+    };
 
-		// Send request
-		request.send(data);
-		return false;
-	};
+    document.querySelector('#new_channel_form').onsubmit = () => {
+        const channel = document.querySelector('#channel_name').value;
+        channel_name = channel;
+
+        socket.emit('new_channel', {channel_name: channel_name});
+    };
 });
 
-// Update text on popping state.
-window.onpopstate = e => {
-	const data = e.state;
-	document.title = data.title;
-	document.querySelector('#body').innerHTML = data.text;
+// Add a new channel to DOM.
+const channel_template = Handlebars.compile(document.querySelector('#add_channel').innerHTML);
+function add_channel(contents) {
+    // Create new channel.
+    const channel = channel_template({'contents': contents});
+
+    // Add channel to DOM.
+    document.querySelector('#channel_list').innerHTML += channel;
 };
 
-// Renders contents of new page in main view.
-function load_page(name, display_name) {
-	const request = new XMLHttpRequest();
+// Add a new user to DOM.
+const user_template = Handlebars.compile(document.querySelector('#user').innerHTML);
+function add_user(contents) {
+    // Create new user.
+    const user = user_template({'contents': contents});
 
-	// Get request for "name".
-	request.open('GET', `/${name}`);
-
-	request.onload = () => {
-		const response = request.responseText;
-		document.querySelector('#body').innerHTML = response;
-
-		// Push state to URL.
-		document.title = name;
-		history.pushState({'title': name, 'text': response}, name, name);
-	};
-	request.send();
+    // Add user to DOM.
+    document.querySelector('#current_users').innerHTML += user;
 };

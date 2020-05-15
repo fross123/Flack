@@ -1,48 +1,39 @@
 import os
 
-from flask import Flask, render_template, jsonify, request, session
-from flask_session import Session
+from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
+display_names = []
+current_users = []
+channels = []
 
 @app.route("/")
 def index():
-	# Check if user has been made
-	if 'user' in session:
-		return render_template("channels.html", user=session['user'])
-	return render_template("index.html")
+    return render_template('index.html', display_names=display_names, current_users=current_users, channels=channels)
 
+@socketio.on("new_user")
+def new_user(data):
+    display_name = data["display_name"]
+    display_names.append(display_name)
 
-@app.route("/channels")
-def channels():
-	return render_template("channels.html")
+    emit("user_signed_in", current_users, broadcast=True)
 
+@socketio.on("returning_user")
+def returning_user(data):
+    display_name = data["display_name"]
 
-@app.route("/display_name", methods=["POST"])
-def display_name():
-	session['user'] = request.form.get("display_name")
+    if display_name not in current_users:
+        current_users.append(display_name)
 
-	return jsonify({"success": True, "name": session['user']})
+    emit("user_signed_in", current_users, broadcast=True)
 
+@socketio.on("new_channel")
+def new_channel(data):
+    channel_name = data["channel_name"]
+    channels.append(channel_name)
 
-@app.route("/posts", methods=["POST"])
-def posts():
-
-    # Get start and end point for posts to generate.
-    start = int(request.form.get("start") or 0)
-    end = int(request.form.get("end") or (start + 9))
-
-    # Generate list of posts.
-    data = []
-    for i in range(start, end + 1):
-        data.append(f"Post #{i}")
-
-    # Return list of posts.
-    return jsonify(data)
+    emit("channel_created", channels, broadcast=True)

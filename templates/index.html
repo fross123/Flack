@@ -1,27 +1,56 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Home
-{% endblock %}
-
-{% block pagescript %}
-        <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+            index.html
 {% endblock %}
 
 {% block body %}
+        <div class = "row">
+            <div class = "col-3">
+                <form id="form">
+                  <div class="form-group">
+                    <label>Display Name</label>
 
-    <div class="container">
-        <h1 id="display_name"></h1>
-        <div id="body">
-            <form id="form">
-                <div class="form-group">
-                    <label for="name">Enter your name to be displayed</label>
-                    <input type="text" class="form-control" id="name" placeholder="Bobby John" />
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">@</span>
+                        </div>
+                        <input class="form-control" id="name" placeholder="Enter Display Name"/>
+                    </div>
+                  </div>
+                  <button id="add_user_button" type="submit" class="btn btn-primary">Submit</button>
+                </form>
 
-            </form>
+                <form id="new_channel_form">
+                  <div class="form-group">
+                    <label>Make a new Channel</label>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">#</span>
+                        </div>
+                        <input class="form-control" id="channel_name" placeholder="Enter Channel Name"/>
+                    </div>
+                  </div>
+                  <button id="add_channel_button" type="submit" class="btn btn-outline-success">Create Channel</button>
+                </form>
+
+                <h1>Server side display Names</h1>
+                <h1 id="display_name">{{ display_names }}</h1>
+
+                <h2>List of Current Users</h2>
+                <div id="current_users">{{ current_users }}</div>
+
+
+            </div>
+
+            <div class="col" style="background: grey;">
+                <h2>List of Channels</h2>
+                <div id="channel_list"></div>
+                <h1>{{ channels }}</h1>
+
+            </div>
         </div>
-    </div>
 
-{%endblock%}
+
+{% endblock %}
