@@ -9,11 +9,11 @@ socketio = SocketIO(app)
 
 display_names = []
 current_users = []
-channels = []
+channel_list = []
 
 @app.route("/")
 def index():
-    return render_template('index.html', display_names=display_names, current_users=current_users, channels=channels)
+    return render_template('index.html', display_names=display_names, current_users=current_users, channel_list=channel_list)
 
 @socketio.on("new_user")
 def new_user(data):
@@ -34,6 +34,6 @@ def returning_user(data):
 @socketio.on("new_channel")
 def new_channel(data):
     channel_name = data["channel_name"]
-    channels.append(channel_name)
+    channel_list.append(channel_name)
 
-    emit("channel_created", channels, broadcast=True)
+    emit("channel_created", {"channel_name": channel_name}, broadcast=True)

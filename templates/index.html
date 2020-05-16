@@ -5,21 +5,48 @@
 {% endblock %}
 
 {% block body %}
-        <div class="not_logged_in">
-            <form id="form">
-              <div class="form-group">
-                <label>Display Name</label>
-                <input class="form-control" id="name" placeholder="Enter Your Display Name Here">
-              </div>
+        <div class="row">
+            <div class="col">
+                <form id="form">
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">@</span>
+                            </div>
+                            <input class="form-control" id="name" placeholder="Enter Display Name"/>
+                        </div>
+                    </div>
+                    <button id="add_user_button" type="submit" class="btn btn-primary">Submit</button>
+                </form>
 
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-            <h1 id="#display_name">{{ display_names }}</h1>
-            <h2 id="current_user"></h2>
+                <form id="new_channel_form">
+                    <div class="form-group">
+                        <label>Make a new Channel</label>
 
-        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">#</span>
+                            </div>
+                            <input class="form-control" id="channel_name" placeholder="Enter Channel Name"/>
+                        </div>
+                    </div>
+                    <button id="add_channel_button" type="submit" class="btn btn-outline-success">Create Channel</button>
+                </form>
 
-        <div class="logged_in" style="display: none;">
-            <h2>This is what being logged in looks like</h2>
+                <h1>Server side display Names</h1>
+                <h1 id="display_name">{{ display_names }}</h1>
+
+                <h2>List of Current Users</h2>
+                <div id="current_users">{{ current_users }}</div>
+            </div>
+
+            <div class="col" style="background: grey;">
+                <h2>List of Channels</h2>
+                <hr/>
+                <div id="channel_list"></div>
+                <hr/>
+                <h1>{{ channel_list }}</h1>
+
+            </div>
         </div>
 {% endblock %}
