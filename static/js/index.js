@@ -21,7 +21,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('user_signed_in', data => {
-        document.querySelector('#current_user').innerHTML = data;
+        // Add user to dom
+        data.forEach(add_user);
+
+        // disable submit new user button
+        const add_user_button = document.querySelector('#add_user_button');
+        add_user_button.disabled = true;
+
+        // enable create channel button
+        const add_channel_button = document.querySelector("#add_channel_button");
+        add_channel_button.disabled = false;
+    });
+
+    socket.on('channel_created', data => {
+        // add channel to channel List
+        data.forEach(add_channel);
     });
 
     document.querySelector('#form').onsubmit = () => {
@@ -39,3 +53,23 @@ document.addEventListener('DOMContentLoaded', () => {
         socket.emit('new_channel', {channel_name: channel_name});
     };
 });
+
+// Add a new channel to DOM.
+const channel_template = Handlebars.compile(document.querySelector('#add_channel').innerHTML);
+function add_channel(contents) {
+    // Create new channel.
+    const channel = channel_template({'contents': contents});
+
+    // Add channel to DOM.
+    document.querySelector('#channel_list').innerHTML += channel;
+};
+
+// Add a new user to DOM.
+const user_template = Handlebars.compile(document.querySelector('#user').innerHTML);
+function add_user(contents) {
+    // Create new user.
+    const user = user_template({'contents': contents});
+
+    // Add user to DOM.
+    document.querySelector('#current_users').innerHTML += user;
+};

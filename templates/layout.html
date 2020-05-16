@@ -16,6 +16,54 @@
         <!-- socketio scripts -->
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 
+        <!-- handlebars js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+
+        <!-- Users Template -->
+        <script id="user" type="text/x-handlebars-template">
+            <div class="user">
+                <ul>
+                    <li>
+                        {% raw -%}
+                            {{ contents }}
+                        {%- endraw %}
+                    </li>
+                </ul>
+            </div>
+        </script>
+
+        <!-- add channel template -->
+        <script id="add_channel" type="text/x-handlebars-template">
+            <div class="channel">
+                <ul>
+                    <li>
+                        {% raw -%}
+                            {{ contents }}
+                        {%- endraw %}
+                    </li>
+                </ul>
+            </div>
+        </script>
+
+        <!-- channel page Template
+        <script id="channel" type="text/x-handlebars-template">
+            <div>
+                {% raw -%}
+                    {{ contents }}
+                {%- endraw %}
+            </div>
+            <div>
+                <div>
+                    <form id="messsage_form">
+                        <div class="form-group">
+                            <input class="form-control" id="message" placeholder="What would you like to say?">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </script> -->
+
         <!-- custom javascript -->
         <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 
