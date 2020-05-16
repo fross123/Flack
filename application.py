@@ -18,9 +18,12 @@ def index():
 @socketio.on("new_user")
 def new_user(data):
     display_name = data["display_name"]
-    display_names.append(display_name)
 
-    emit("user_signed_in", current_users, broadcast=True)
+    if display_name not in display_names:
+        display_names.append(display_name)
+        current_users.append(display_name)
+
+        emit("user_signed_in", {"display_name": display_name}, broadcast=True)
 
 @socketio.on("returning_user")
 def returning_user(data):
@@ -28,12 +31,13 @@ def returning_user(data):
 
     if display_name not in current_users:
         current_users.append(display_name)
-
-    emit("user_signed_in", current_users, broadcast=True)
+        emit("user_signed_in", {"display_name": display_name}, broadcast=True)
 
 @socketio.on("new_channel")
 def new_channel(data):
     channel_name = data["channel_name"]
-    channel_list.append(channel_name)
+
+    if channel_name not in channel_list:
+        channel_list.append(channel_name)
 
     emit("channel_created", {"channel_name": channel_name}, broadcast=True)

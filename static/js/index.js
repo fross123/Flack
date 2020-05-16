@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     var display_name = localStorage.getItem('display_name');
     var channel_name = "";
+    const add_user_button = document.querySelector('#add_user_button');
+    const add_channel_button = document.querySelector("#add_channel_button");
 
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
@@ -13,29 +15,28 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('connect', () => {
         if (display_name != "") {
             socket.emit('returning_user', {display_name: localStorage.getItem('display_name')});
+
+            // enable create channel button
+            add_channel_button.disabled = false;
         }
         else if (display_name == "") {
-            const add_channel_button = document.querySelector("#add_channel_button");
-            add_channel_button.disabled = true;
+            add_user_button.disabled = false;
         }
     });
 
     socket.on('user_signed_in', data => {
+        const current_users = data.display_name;
+        add_user(current_users);
+
         // Add user to dom
-        data.forEach(add_user);
-
-        // disable submit new user button
-        const add_user_button = document.querySelector('#add_user_button');
-        add_user_button.disabled = true;
-
-        // enable create channel button
-        const add_channel_button = document.querySelector("#add_channel_button");
-        add_channel_button.disabled = false;
+        //current_users.forEach(add_user);
     });
 
     socket.on('channel_created', data => {
+        const channel_name = data.channel_name;
+
         // add channel to channel List
-        data.forEach(add_channel);
+        add_channel(channel_name);
     });
 
     document.querySelector('#form').onsubmit = () => {
