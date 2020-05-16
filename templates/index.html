@@ -39,7 +39,18 @@
                 <h1 id="display_name">{{ display_names }}</h1>
 
                 <h2>List of Current Users</h2>
-                <div id="current_users">{{ current_users }}</div>
+
+                {% for current_users in current_users %}
+                <div class="user">
+                    <ul>
+                        <li>
+                                {{ current_users }}
+                        </li>
+                    </ul>
+                </div>
+
+                {% endfor %}
+                <div id="current_users"></div>
 
 
             </div>
@@ -47,10 +58,18 @@
             <div class="col" style="background: grey;">
                 <h2>List of Channels</h2>
                 <hr/>
+                {% for channel_list in channel_list %}
+                <div class="user">
+                    <ul>
+                        <li>
+                                {{ channel_list }}
+                        </li>
+                    </ul>
+                </div>
+
+                {% endfor %}
                 <div id="channel_list"></div>
                 <hr/>
-                <h1>{{ channel_list }}</h1>
-
             </div>
         </div>
 
