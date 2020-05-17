@@ -55,7 +55,7 @@
 
                     {% for channel_list in channel_list %}
 
-                    <button onclick="messageView()" type="button" class="btn btn-outline-info" class="channel">
+                    <button onclick="messageView(this.innerHTML)" type="button" class="btn btn-outline-info" class="channel">
                         {{ channel_list }}
                     </button>
 

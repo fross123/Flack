@@ -54,13 +54,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // display messages
-function messageView() {
+function messageView(current_channel) {
+    // display messages
     var x = document.getElementById("messsage_form");
     if (x.style.display === "none") {
         x.style.display = "block";
     } else {
         x.style.display = "none";
     }
+
+    var current_channel = current_channel;
+    localStorage.setItem('current_channel', current_channel);;
 }
 
 // Add a new channel to DOM.
