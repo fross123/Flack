@@ -53,9 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 });
 
-// display messages
+// Current channel button click
 function messageView(current_channel) {
-    // display messages
+    // toggle messages display
     var x = document.getElementById("messsage_form");
     if (x.style.display === "none") {
         x.style.display = "block";
@@ -63,6 +63,7 @@ function messageView(current_channel) {
         x.style.display = "none";
     }
 
+    // add current channel to localStorage
     var current_channel = current_channel;
     localStorage.setItem('current_channel', current_channel);;
 }
