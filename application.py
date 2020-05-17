@@ -40,4 +40,4 @@ def new_channel(data):
     if channel_name not in channel_list:
         channel_list.append(channel_name)
 
-    emit("channel_created", {"channel_name": channel_name}, broadcast=True)
+        emit("channel_created", {"channel_name": channel_name}, broadcast=True)
