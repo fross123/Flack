@@ -21,32 +21,24 @@
 
         <!-- Users Template -->
         <script id="user" type="text/x-handlebars-template">
-            <div class="user">
-                <ul>
-                    <li>
-                        {% raw -%}
-                            {{ contents }}
-                        {%- endraw %}
-                    </li>
-                </ul>
-            </div>
+            <li>
+                {% raw -%}
+                    {{ contents }}
+                {%- endraw %}
+            </li>
         </script>
 
         <!-- add channel template -->
         <script id="add_channel" type="text/x-handlebars-template">
-            <div class="channel">
-                <ul>
-                    <li>
-                        {% raw -%}
-                            {{ contents }}
-                        {%- endraw %}
-                    </li>
-                </ul>
-            </div>
+                <button onclick="messageView()" type="button" class="btn btn-outline-info" class="channel">
+                    {% raw -%}
+                        {{ contents }}
+                    {%- endraw %}
+                </button>
         </script>
 
-        <!-- channel page Template
-        <script id="channel" type="text/x-handlebars-template">
+        <!-- messaging page Template -->
+        <script id="messages" type="text/x-handlebars-template">
             <div>
                 {% raw -%}
                     {{ contents }}
@@ -62,7 +54,7 @@
                     </form>
                 </div>
             </div>
-        </script> -->
+        </script>
 
         <!-- custom javascript -->
         <script src="{{ url_for('static', filename='js/index.js') }}"></script>

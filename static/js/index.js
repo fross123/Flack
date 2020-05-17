@@ -18,18 +18,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // enable create channel button
             add_channel_button.disabled = false;
-        }
-        else if (display_name == "") {
+        } else if (display_name == "") {
             add_user_button.disabled = false;
         }
     });
 
     socket.on('user_signed_in', data => {
         const current_users = data.display_name;
-        add_user(current_users);
 
-        // Add user to dom
-        //current_users.forEach(add_user);
+        // add current user to user list
+        add_user(current_users);
     });
 
     socket.on('channel_created', data => {
@@ -55,6 +53,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 });
 
+// display messages
+function messageView() {
+    var x = document.getElementById("messsage_form");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+
 // Add a new channel to DOM.
 const channel_template = Handlebars.compile(document.querySelector('#add_channel').innerHTML);
 function add_channel(contents) {
@@ -63,7 +71,7 @@ function add_channel(contents) {
 
     // Add channel to DOM.
     document.querySelector('#channel_list').innerHTML += channel;
-};
+}
 
 // Add a new user to DOM.
 const user_template = Handlebars.compile(document.querySelector('#user').innerHTML);
@@ -73,4 +81,4 @@ function add_user(contents) {
 
     // Add user to DOM.
     document.querySelector('#current_users').innerHTML += user;
-};
+}
