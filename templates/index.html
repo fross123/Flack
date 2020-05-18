@@ -39,9 +39,9 @@
 
 
                 <div class="user" id="current_users">
-                    <ul>
+                    <ul class="list-group">
                         {% for current_users in current_users %}
-                        <li>
+                        <li class="list-group-item">
                                 {{ current_users }}
                         </li>
                         {% endfor %}
@@ -50,15 +50,11 @@
 
                 <h2>List of Channels</h2>
                 <hr/>
-
                 <div class="btn-group-vertical" id="channel_list">
-
                     {% for channel_list in channel_list %}
-
                     <button onclick="messageView(this.innerHTML)" type="button" class="btn btn-outline-info" class="channel">
                         {{ channel_list }}
                     </button>
-
                     {% endfor %}
                 </div>
                 <hr/>
