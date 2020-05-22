@@ -10,10 +10,11 @@ socketio = SocketIO(app)
 display_names = []
 current_users = []
 channel_list = []
+message_list = {"channel": "", "message": ""}
 
 @app.route("/")
 def index():
-    return render_template('index.html', display_names=display_names, current_users=current_users, channel_list=channel_list)
+    return render_template('index.html', display_names=display_names, current_users=current_users, channel_list=channel_list, message_list=message_list)
 
 @socketio.on("new_user")
 def new_user(data):

@@ -50,9 +50,9 @@
 
                 <h2>List of Channels</h2>
                 <hr/>
-                <div class="btn-group-vertical" id="channel_list">
+                <div class="list-group" id="channel_list">
                     {% for channel_list in channel_list %}
-                    <button onclick="messageView(this.innerHTML)" type="button" class="btn btn-outline-info" class="channel">
+                    <button onclick="messageView(this)" type="button" class="list-group-item list-group-item-action channel">
                         {{ channel_list }}
                     </button>
                     {% endfor %}
@@ -61,18 +61,25 @@
             </div>
 
             <div class="col" style="background: grey;">
-                <div>
+                <span id="messages_view" style="display: none">
                     <div>
-                        <form id="messsage_form" style="display: none">
+                        <ul>
+                            {% for message_list in message_list %}
+                            <li class="message_list">
+                                {{ message_list }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div>
+                        <form id="messsage_form" >
                             <div class="form-group">
                                 <input class="form-control" id="message" placeholder="What would you like to say?">
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>
-                </div>
-
-                <div id="current_messages"></div>
+                </span>
             </div>
         </div>
 {% endblock %}

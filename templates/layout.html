@@ -30,30 +30,20 @@
 
         <!-- add channel template -->
         <script id="add_channel" type="text/x-handlebars-template">
-                <button onclick="messageView()" type="button" class="btn btn-outline-info" class="channel">
-                    {% raw -%}
-                        {{ contents }}
-                    {%- endraw %}
-                </button>
+            <button onclick="messageView(this.innerHTML)" type="button" class="list-group-item list-group-item-action channel">
+                {% raw -%}
+                    {{ contents }}
+                {%- endraw %}
+            </button>
         </script>
 
         <!-- messaging page Template -->
         <script id="messages" type="text/x-handlebars-template">
-            <div>
+            <li>
                 {% raw -%}
                     {{ contents }}
                 {%- endraw %}
-            </div>
-            <div>
-                <div>
-                    <form id="messsage_form">
-                        <div class="form-group">
-                            <input class="form-control" id="message" placeholder="What would you like to say?">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
-            </div>
+            </li>
         </script>
 
         <!-- custom javascript -->

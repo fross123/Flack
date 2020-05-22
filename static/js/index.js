@@ -51,20 +51,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
         socket.emit('new_channel', {channel_name: channel_name});
     };
+
+    /*document.querySelector('#messsage_form').onsubmit = () => {
+        const message = document.querySelector('#message').value;
+
+        socket.emit('new_message', {message: message});
+    };*/
 });
 
 // Current channel button click
-function messageView(current_channel) {
+function messageView(current_channel_button) {
     // toggle messages display
-    var x = document.getElementById("messsage_form");
+    const x = document.getElementById("messages_view");
     if (x.style.display === "none") {
         x.style.display = "block";
+        current_channel_button.classList.add("active");
+
     } else {
         x.style.display = "none";
+        current_channel_button.classList.remove("active");
+
     }
 
     // add current channel to localStorage
-    var current_channel = current_channel;
+    var current_channel = current_channel_button.innerHTML;
     localStorage.setItem('current_channel', current_channel);;
 }
 
