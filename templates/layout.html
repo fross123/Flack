@@ -30,7 +30,7 @@
 
         <!-- add channel template -->
         <script id="add_channel" type="text/x-handlebars-template">
-            <button onclick="messageView(this.innerHTML)" type="button" id="channel" class="list-group-item list-group-item-action channel">
+            <button onclick="messageView(this)" type="button" id="channel" class="list-group-item list-group-item-action channel">
                 {% raw -%}
                     {{ contents }}
                 {%- endraw %}

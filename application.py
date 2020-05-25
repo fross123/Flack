@@ -47,13 +47,15 @@ def new_channel(data):
 def new_message(data):
     message = data["message"]
     channel = data["current_channel"]
+    display_name = data["name"]
 
     message_info = {
         "message": message,
         #"date": data["date"],
-        "channel": channel
+        "channel": channel,
+        "display_name": display_name
     }
 
     messages.append(message_info)
 
-    emit("message_sent", {"message": message, "current_channel": channel}, broadcast=True)
+    emit("message_sent", {"message": message, "current_channel": channel, "name": display_name}, broadcast=True)

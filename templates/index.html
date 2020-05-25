@@ -64,9 +64,13 @@
                 <span id="messages_view" style="display: none">
                     <div>
                         <ul id="message_list">
-                            {% for message in messages %}
+                            {% for message_info in messages %}
                             <li>
-                                {{ message }}
+                                {{ message_info.message }}
+                                from
+                                {{ message_info.display_name}}
+                                on channel
+                                {{ message_info.channel}}
                             </li>
                             {% endfor %}
                         </ul>

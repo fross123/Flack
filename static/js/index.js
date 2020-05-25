@@ -18,11 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // enable create channel button
             add_channel_button.disabled = false;
+
         } else if (display_name == "") {
+            // enable add user button
             add_user_button.disabled = false;
         }
 
-        // Each button should emit a "submit vote" event
+        /*
         document.querySelectorAll('#channel').forEach(button => {
             button.onclick = () => {
                 // toggle messages display
@@ -45,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('current_channel', "none");
                 }
             };
-        });
+        });*/
     });
 
     socket.on('user_signed_in', data => {
@@ -63,11 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('message_sent', data => {
-        const message = data.message;
+        //const message = data.message;
         //const channel = data.channel;
         //const date = data.date;
 
-        add_message(message);
+        add_message(data);
 
     })
 
@@ -76,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         display_name = name;
 
         localStorage.setItem('display_name', display_name);
+
         socket.emit('new_user', {display_name: display_name});
     };
 
@@ -88,14 +91,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('#messsage_form').onsubmit = () => {
         const message = document.querySelector('#message').value;
-        
+
         //current_date();
-        const current_channel = localStorage.getItem('current_channel');
 
         // Clear input field
         document.querySelector('#message').value = '';
 
-        socket.emit('send_message', {message: message, current_channel: current_channel});
+        socket.emit('send_message', {
+            message: message,
+            current_channel: localStorage.getItem('current_channel'),
+            name: localStorage.getItem('display_name')
+        });
 
         return false;
     };
@@ -107,6 +113,31 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector("#message_date").innerHTML = n;
 }*/
 
+function messageView(channelButton) {
+    // toggle messages display
+    const x = document.querySelector("#messages_view");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+
+        // Make Current Channel Active
+        channelButton.classList.add("active");
+
+        const y = channelButton.innerHTML;
+        const current_channel = y.replace(/(\r\n|\n|\r)/gm,"");
+
+        // add current channel to localStorage
+        localStorage.setItem('current_channel', current_channel);
+
+    } else {
+        x.style.display = "none";
+
+        channelButton.classList.remove("active");
+
+        // remove current channel from localStorage
+        localStorage.setItem('current_channel', "none");
+    }
+}
+
 // Add a new message to DOM.
 const messages_template = Handlebars.compile(document.querySelector('#messages').innerHTML);
 function add_message(contents) {
@@ -116,7 +147,12 @@ function add_message(contents) {
     //const n = d.toLocaleString();
 
     // Create new message.
-    const message = messages_template({'contents': contents});
+    const message = messages_template({
+        'contents':
+            contents.message + " " +
+            contents.name + " " +
+            contents.current_channel
+    });
 
     // Add message to DOM.
     document.querySelector('#message_list').innerHTML += message;
