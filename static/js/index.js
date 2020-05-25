@@ -21,6 +21,31 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (display_name == "") {
             add_user_button.disabled = false;
         }
+
+        // Each button should emit a "submit vote" event
+        document.querySelectorAll('#channel').forEach(button => {
+            button.onclick = () => {
+                // toggle messages display
+                const x = document.querySelector("#messages_view");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+
+                    // Make Current Channel Active
+                    button.classList.add("active");
+
+                    // add current channel to localStorage
+                    localStorage.setItem('current_channel', button.innerHTML);
+
+                } else {
+                    x.style.display = "none";
+
+                    button.classList.remove("active");
+
+                    // remove current channel from localStorage
+                    localStorage.setItem('current_channel', "none");
+                }
+            };
+        });
     });
 
     socket.on('user_signed_in', data => {
@@ -37,6 +62,15 @@ document.addEventListener('DOMContentLoaded', () => {
         add_channel(channel_name);
     });
 
+    socket.on('message_sent', data => {
+        const message = data.message;
+        //const channel = data.channel;
+        //const date = data.date;
+
+        add_message(message);
+
+    })
+
     document.querySelector('#form').onsubmit = () => {
         const name = document.querySelector('#name').value;
         display_name = name;
@@ -52,30 +86,40 @@ document.addEventListener('DOMContentLoaded', () => {
         socket.emit('new_channel', {channel_name: channel_name});
     };
 
-    /*document.querySelector('#messsage_form').onsubmit = () => {
+    document.querySelector('#messsage_form').onsubmit = () => {
         const message = document.querySelector('#message').value;
+        
+        //current_date();
+        const current_channel = localStorage.getItem('current_channel');
 
-        socket.emit('new_message', {message: message});
-    };*/
+        // Clear input field
+        document.querySelector('#message').value = '';
+
+        socket.emit('send_message', {message: message, current_channel: current_channel});
+
+        return false;
+    };
 });
 
-// Current channel button click
-function messageView(current_channel_button) {
-    // toggle messages display
-    const x = document.getElementById("messages_view");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-        current_channel_button.classList.add("active");
+/*function current_date() {
+    const d = new Date();
+    const n = d.toLocaleString();
+    document.querySelector("#message_date").innerHTML = n;
+}*/
 
-    } else {
-        x.style.display = "none";
-        current_channel_button.classList.remove("active");
+// Add a new message to DOM.
+const messages_template = Handlebars.compile(document.querySelector('#messages').innerHTML);
+function add_message(contents) {
 
-    }
+    //add Date
+    //const d = new Date();
+    //const n = d.toLocaleString();
 
-    // add current channel to localStorage
-    var current_channel = current_channel_button.innerHTML;
-    localStorage.setItem('current_channel', current_channel);;
+    // Create new message.
+    const message = messages_template({'contents': contents});
+
+    // Add message to DOM.
+    document.querySelector('#message_list').innerHTML += message;
 }
 
 // Add a new channel to DOM.

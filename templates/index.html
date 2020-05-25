@@ -52,7 +52,7 @@
                 <hr/>
                 <div class="list-group" id="channel_list">
                     {% for channel_list in channel_list %}
-                    <button onclick="messageView(this)" type="button" class="list-group-item list-group-item-action channel">
+                    <button onclick="messageView(this)" type="button" class="list-group-item list-group-item-action channel" id="channel">
                         {{ channel_list }}
                     </button>
                     {% endfor %}
@@ -63,10 +63,10 @@
             <div class="col" style="background: grey;">
                 <span id="messages_view" style="display: none">
                     <div>
-                        <ul>
-                            {% for message_list in message_list %}
-                            <li class="message_list">
-                                {{ message_list }}
+                        <ul id="message_list">
+                            {% for message in messages %}
+                            <li>
+                                {{ message }}
                             </li>
                             {% endfor %}
                         </ul>
