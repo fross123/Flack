@@ -39,7 +39,7 @@
 
         <!-- messaging page Template -->
         <script id="messages" type="text/x-handlebars-template">
-            <li>
+            <li style="{% raw -%}{{ displayStyle }}{%- endraw %}">
                 {% raw -%}
                     {{ contents }}
                 {%- endraw %}

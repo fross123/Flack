@@ -24,8 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             add_user_button.disabled = false;
         }
 
-        /*
-        document.querySelectorAll('#channel').forEach(button => {
+        /*document.querySelectorAll('#channel').forEach(button => {
             button.onclick = () => {
                 // toggle messages display
                 const x = document.querySelector("#messages_view");
@@ -51,30 +50,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('user_signed_in', data => {
-        const current_users = data.display_name;
+        let current_users = data.display_name;
 
         // add current user to user list
         add_user(current_users);
     });
 
     socket.on('channel_created', data => {
-        const channel_name = data.channel_name;
+        let channel_name = data.channel_name;
 
         // add channel to channel List
         add_channel(channel_name);
     });
 
-    socket.on('message_sent', data => {
-        //const message = data.message;
-        //const channel = data.channel;
-        //const date = data.date;
-
+    socket.on('loadMessages', data => {
         add_message(data);
-
     })
 
     document.querySelector('#form').onsubmit = () => {
-        const name = document.querySelector('#name').value;
+        let name = document.querySelector('#name').value;
         display_name = name;
 
         localStorage.setItem('display_name', display_name);
@@ -83,14 +77,19 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.querySelector('#new_channel_form').onsubmit = () => {
-        const channel = document.querySelector('#channel_name').value;
+        let channel = document.querySelector('#channel_name').value;
         channel_name = channel;
 
+        // clear input
+        document.querySelector('#channel_name').value = '';
+
         socket.emit('new_channel', {channel_name: channel_name});
+
+        return false;
     };
 
     document.querySelector('#messsage_form').onsubmit = () => {
-        const message = document.querySelector('#message').value;
+        let message = document.querySelector('#message').value;
 
         //current_date();
 
@@ -114,27 +113,43 @@ document.addEventListener('DOMContentLoaded', () => {
 }*/
 
 function messageView(channelButton) {
+    // Connect to websocket
+    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
     // toggle messages display
-    const x = document.querySelector("#messages_view");
+    let x = document.querySelector("#messages_view");
     if (x.style.display === "none") {
         x.style.display = "block";
 
         // Make Current Channel Active
         channelButton.classList.add("active");
 
-        const y = channelButton.innerHTML;
-        const current_channel = y.replace(/(\r\n|\n|\r)/gm,"");
+        let y = channelButton.innerHTML;
+        let current_channel = y.replace(/(\r\n|\n|\r)/gm,"");
 
         // add current channel to localStorage
         localStorage.setItem('current_channel', current_channel);
 
+        socket.emit('joinChannel', {
+            current_channel: localStorage.getItem('current_channel'),
+            display_name: localStorage.getItem('display_name')
+        });
     } else {
         x.style.display = "none";
 
+        // deactivate channel class
         channelButton.classList.remove("active");
+
+        socket.emit('leaveChannel', {
+            current_channel: localStorage.getItem('current_channel'),
+            display_name: localStorage.getItem('display_name')
+        });
 
         // remove current channel from localStorage
         localStorage.setItem('current_channel', "none");
+
+        // clear innerHTML of messages List
+        document.querySelector("#message_list").innerHTML = "";
     }
 }
 
@@ -146,13 +161,22 @@ function add_message(contents) {
     //const d = new Date();
     //const n = d.toLocaleString();
 
+    let displayStyle = "";
+
+    if (contents.name == localStorage.getItem('display_name')) {
+        displayStyle = "background: red";
+    }
+    else if (contents.name != localStorage.getItem('display_name')) {
+        displayStyle = "background: blue";
+    }
+
     // Create new message.
-    const message = messages_template({
+    let message = messages_template({
         'contents':
             contents.message + " " +
             contents.name + " " +
-            contents.current_channel
-    });
+            contents.channel
+    , 'displayStyle': displayStyle});
 
     // Add message to DOM.
     document.querySelector('#message_list').innerHTML += message;
@@ -162,7 +186,7 @@ function add_message(contents) {
 const channel_template = Handlebars.compile(document.querySelector('#add_channel').innerHTML);
 function add_channel(contents) {
     // Create new channel.
-    const channel = channel_template({'contents': contents});
+    let channel = channel_template({'contents': contents});
 
     // Add channel to DOM.
     document.querySelector('#channel_list').innerHTML += channel;
@@ -172,7 +196,7 @@ function add_channel(contents) {
 const user_template = Handlebars.compile(document.querySelector('#user').innerHTML);
 function add_user(contents) {
     // Create new user.
-    const user = user_template({'contents': contents});
+    let user = user_template({'contents': contents});
 
     // Add user to DOM.
     document.querySelector('#current_users').innerHTML += user;
