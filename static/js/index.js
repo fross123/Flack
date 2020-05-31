@@ -22,6 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (display_name == "") {
             // enable add user button
             add_user_button.disabled = false;
+
+            // do not display channel list.
+            document.querySelector("#channel_list").style.display = "none";
         }
 
         /*document.querySelectorAll('#channel').forEach(button => {
@@ -85,6 +88,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // enable create channel button
         add_channel_button.disabled = false;
+
+        // Allow channels to be viewed.
+        document.querySelector("#channel_list").style.display = "block";
 
         socket.emit('new_user', {display_name: display_name});
 
