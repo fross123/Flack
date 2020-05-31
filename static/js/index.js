@@ -67,6 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
         add_message(data);
     })
 
+    socket.on('alert', data => {
+        window.alert(data.alert);
+    })
+
     document.querySelector('#form').onsubmit = () => {
         let name = document.querySelector('#name').value;
         display_name = name;
@@ -172,11 +176,7 @@ function add_message(contents) {
 
     // Create new message.
     let message = messages_template({
-        'contents':
-            contents.message + " " +
-            contents.name + " " +
-            contents.channel
-    , 'displayStyle': displayStyle});
+        'contents': contents.message + " from " + contents.name + " on " + contents.date, 'displayStyle': displayStyle});
 
     // Add message to DOM.
     document.querySelector('#message_list').innerHTML += message;

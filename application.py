@@ -1,4 +1,5 @@
 import os
+import datetime
 
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit, join_room, leave_room
@@ -51,7 +52,7 @@ def on_join(data):
 
     for message_info in messages:
         if message_info["channel"] == current_channel:
-            emit ("loadMessages", {"message": message_info['message'], "channel": message_info['channel'], "name": message_info['display_name']})
+            emit ("loadMessages", {"message": message_info['message'], "channel": message_info['channel'], "name": message_info['display_name'], "date": message_info['date']})
 
     print(display_name + ' has entered the room.', current_channel)
 
@@ -67,14 +68,23 @@ def new_message(data):
     message = data["message"]
     channel = data["current_channel"]
     display_name = data["name"]
+    date = datetime.datetime.now()
+    dateString = date.strftime("%a, %b %d %Y at %I:%M %p")
+
 
     message_info = {
         "message": message,
-        #"date": data["date"],
+        "date": dateString,
         "channel": channel,
         "display_name": display_name
     }
 
-    messages.append(message_info)
+    # If more than 100 messages are saved, then emit alert.
+    countMessages = (sum(x.get('channel') == channel for x in messages))
+    if countMessages > 100:
+        emit ("alert", {"alert": "You have reached your maximum number of messages on this channel, please delete some in order to send another message"})
 
-    emit("loadMessages", {"message": message, "channel": channel, "name": display_name}, room=channel)
+    # If message count is less than or equal to 100 add to list and emit to client.
+    elif countMessages <= 100:
+        messages.append(message_info)
+        emit("loadMessages", {"message": message, "channel": channel, "name": display_name, "date": dateString}, room=channel)
