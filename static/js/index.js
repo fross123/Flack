@@ -26,30 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // do not display channel list.
             document.querySelector("#channel_list").style.display = "none";
         }
-
-        /*document.querySelectorAll('#channel').forEach(button => {
-            button.onclick = () => {
-                // toggle messages display
-                const x = document.querySelector("#messages_view");
-                if (x.style.display === "none") {
-                    x.style.display = "block";
-
-                    // Make Current Channel Active
-                    button.classList.add("active");
-
-                    // add current channel to localStorage
-                    localStorage.setItem('current_channel', button.innerHTML);
-
-                } else {
-                    x.style.display = "none";
-
-                    button.classList.remove("active");
-
-                    // remove current channel from localStorage
-                    localStorage.setItem('current_channel', "none");
-                }
-            };
-        });*/
     });
 
     socket.on('user_signed_in', data => {
@@ -112,8 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#messsage_form').onsubmit = () => {
         let message = document.querySelector('#message').value;
 
-        //current_date();
-
         // Clear input field
         document.querySelector('#message').value = '';
 
@@ -126,12 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
     };
 });
-
-/*function current_date() {
-    const d = new Date();
-    const n = d.toLocaleString();
-    document.querySelector("#message_date").innerHTML = n;
-}*/
 
 function messageView(channelButton) {
     // Connect to websocket
@@ -177,10 +145,6 @@ function messageView(channelButton) {
 // Add a new message to DOM.
 const messages_template = Handlebars.compile(document.querySelector('#messages').innerHTML);
 function add_message(contents) {
-
-    //add Date
-    //const d = new Date();
-    //const n = d.toLocaleString();
 
     let displayStyle = "";
 

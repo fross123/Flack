@@ -54,14 +54,11 @@ def on_join(data):
         if message_info["channel"] == current_channel:
             emit ("loadMessages", {"message": message_info['message'], "channel": message_info['channel'], "name": message_info['display_name'], "date": message_info['date']})
 
-    print(display_name + ' has entered the room.', current_channel)
-
 @socketio.on('leaveChannel')
 def on_leave(data):
     display_name = data['display_name']
     current_channel = data['current_channel']
     leave_room(current_channel)
-    print(display_name + ' has left the room.', current_channel)
 
 @socketio.on("send_message")
 def new_message(data):
