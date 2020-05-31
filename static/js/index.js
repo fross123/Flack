@@ -77,7 +77,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         localStorage.setItem('display_name', display_name);
 
+        // clear input
+        document.querySelector('#name').value = '';
+
+        // diable add user button
+        add_user_button.disabled = true;
+
+        // enable create channel button
+        add_channel_button.disabled = false;
+
         socket.emit('new_user', {display_name: display_name});
+
+        return false;
     };
 
     document.querySelector('#new_channel_form').onsubmit = () => {
