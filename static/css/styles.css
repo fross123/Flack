@@ -4,3 +4,29 @@
     position:absolute;
     bottom: 5%;
 }*/
+
+.sender {
+    background-color: lightblue;
+    border-radius: 2em;
+}
+
+.recieved{
+    background-color: grey;
+    border-radius: 2em;
+}
+
+.message {
+    padding: 25px;
+    margin-bottom: 10px;
+    list-style-type: none;
+}
+
+.name {
+    list-style-type: none;
+    float: left;
+}
+
+.date {
+    list-style-type: none;
+    float: right;
+}

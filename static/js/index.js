@@ -57,6 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('loadMessages', data => {
+        if (data.name == localStorage.getItem('display_name')){
+            data.name = "You";
+        }
         add_message(data);
     })
 
@@ -162,16 +165,20 @@ function add_message(contents) {
 
     let displayStyle = "";
 
-    if (contents.name == localStorage.getItem('display_name')) {
-        displayStyle = "background: red";
+    if (contents.name == "You") {
+        displayStyle = "sender";
     }
-    else if (contents.name != localStorage.getItem('display_name')) {
-        displayStyle = "background: blue";
+    else if (contents.name != "You") {
+        displayStyle = "recieved";
     }
 
     // Create new message.
     let message = messages_template({
-        'contents': contents.message + " from " + contents.name + " on " + contents.date, 'displayStyle': displayStyle});
+        'contents': contents.message,
+        'name': contents.name,
+        'date': contents.date,
+        'displayStyle': displayStyle
+    });
 
     // Add message to DOM.
     document.querySelector('#message_list').innerHTML += message;

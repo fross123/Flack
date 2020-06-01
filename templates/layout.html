@@ -39,11 +39,26 @@
 
         <!-- messaging page Template -->
         <script id="messages" type="text/x-handlebars-template">
-            <li style="{% raw -%}{{ displayStyle }}{%- endraw %}">
-                {% raw -%}
-                    {{ contents }}
-                {%- endraw %}
-            </li>
+            <div class="{% raw -%}{{ displayStyle }}{%- endraw %}">
+                <li class="message">
+                    {% raw -%}
+                        {{ contents }}
+                    {%- endraw %}
+                    <ul>
+                        <li class="name">
+                            {% raw -%}
+                                {{ name }}
+                            {%- endraw %}
+                        </li>
+                        <li class="date">
+                            {% raw -%}
+                                {{ date }}
+                            {%- endraw %}
+                        </li>
+                    </ul>
+                </li>
+            </div>
+
         </script>
 
         <!-- custom javascript -->
