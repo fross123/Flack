@@ -7,12 +7,12 @@
 
 .sender {
     background-color: lightblue;
-    border-radius: 2em;
+    border-radius: 5px;
 }
 
 .recieved{
     background-color: grey;
-    border-radius: 2em;
+    border-radius: 5px;
 }
 
 .message {
