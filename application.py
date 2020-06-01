@@ -60,6 +60,13 @@ def on_leave(data):
     current_channel = data['current_channel']
     leave_room(current_channel)
 
+@socketio.on("deleteMessages")
+def delete_Messages(data):
+    name = data['display_name']
+
+    # delete messages from server by sender
+    messages[:] = [i for i in messages if not (i['display_name'] == name)]
+
 @socketio.on("send_message")
 def new_message(data):
     message = data["message"]
@@ -78,10 +85,10 @@ def new_message(data):
 
     # If more than 100 messages are saved, then emit alert.
     countMessages = (sum(x.get('channel') == channel for x in messages))
-    if countMessages > 100:
+    if countMessages > 99:
         emit ("alert", {"alert": "You have reached your maximum number of messages on this channel, please delete some in order to send another message"})
 
     # If message count is less than or equal to 100 add to list and emit to client.
-    elif countMessages <= 100:
+    elif countMessages <= 99:
         messages.append(message_info)
         emit("loadMessages", {"message": message, "channel": channel, "name": display_name, "date": dateString}, room=channel)

@@ -118,6 +118,20 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 });
 
+document.addEventListener('click', event => {
+    const element = event.target;
+    if (element.id == 'deleteButton') {
+        document.querySelectorAll('.sender').forEach(e => e.remove());
+
+        // Connect to websocket
+        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+        socket.emit('deleteMessages', {
+            display_name: localStorage.getItem('display_name')
+        });
+    }
+});
+
 function messageView(channelButton) {
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
