@@ -14,10 +14,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     socket.on('connect', () => {
         if (display_name != "") {
-            socket.emit('returning_user', {display_name: localStorage.getItem('display_name')});
+            if (localStorage.getItem('current_channel') != "none") {
+                socket.emit('returning_user', {display_name: localStorage.getItem('display_name')});
 
-            // enable create channel button
-            add_channel_button.disabled = false;
+                // enable create channel button
+                add_channel_button.disabled = false;
+
+                // enable create channel button
+                add_channel_button.disabled = false;
+
+                // click channel button
+                document.getElementById(localStorage.getItem('current_channel')).click();
+
+            }else {
+                socket.emit('returning_user', {display_name: localStorage.getItem('display_name')});
+
+                // enable create channel button
+                add_channel_button.disabled = false;
+            }
 
         } else if (display_name == "") {
             // enable add user button
@@ -113,7 +127,7 @@ function messageView(channelButton) {
         // Make Current Channel Active
         channelButton.classList.add("active");
 
-        let y = channelButton.innerHTML;
+        let y = channelButton.id;
         let current_channel = y.replace(/(\r\n|\n|\r)/gm,"");
 
         // add current channel to localStorage
