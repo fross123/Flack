@@ -5,6 +5,17 @@
     bottom: 5%;
 }*/
 
+#messages_view {
+    margin: 2%;
+}
+
+#messsage_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
 .sender {
     background-color: lightblue;
     border-radius: 5px;
