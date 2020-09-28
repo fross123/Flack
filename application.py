@@ -92,3 +92,6 @@ def new_message(data):
     elif countMessages <= 99:
         messages.append(message_info)
         emit("loadMessages", {"message": message, "channel": channel, "name": display_name, "date": dateString}, room=channel)
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
