@@ -1,5 +1,7 @@
-Flask
-Flask-SocketIO
+Flask===2.0.1
+Flask-SocketIO===5.0.3
 simplejson
 requests
 datetime
+eventlet
+python-engineio

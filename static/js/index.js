@@ -3,6 +3,7 @@ if (!localStorage.getItem('display_name')) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM Loaded");
 
     var display_name = localStorage.getItem('display_name');
     var channel_name = "";
@@ -10,27 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const add_channel_button = document.querySelector("#add_channel_button");
 
     // Connect to websocket
+    // var socket = io();
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
     socket.on('connect', () => {
         if (display_name != "") {
+            socket.emit('returning_user', { display_name: localStorage.getItem('display_name') });
+            add_channel_button.disabled = false; // enable create channel button
+
             if (localStorage.getItem('current_channel') != "none") {
-                socket.emit('returning_user', {display_name: localStorage.getItem('display_name')});
-
-                // enable create channel button
-                add_channel_button.disabled = false;
-
-                // enable create channel button
-                add_channel_button.disabled = false;
-
                 // click channel button
                 document.getElementById(localStorage.getItem('current_channel')).click();
-
-            }else {
-                socket.emit('returning_user', {display_name: localStorage.getItem('display_name')});
-
-                // enable create channel button
-                add_channel_button.disabled = false;
             }
 
         } else if (display_name == "") {
@@ -43,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('user_signed_in', data => {
+        // When another user signs in
         let current_users = data.display_name;
 
         // add current user to user list
@@ -50,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('channel_created', data => {
+        // When another user creates a channel
         let channel_name = data.channel_name;
 
         // add channel to channel List
@@ -57,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('loadMessages', data => {
+        console.log("Load Messages Recieved");
         if (data.name == localStorage.getItem('display_name')){
             data.name = "You";
         }
@@ -91,11 +85,12 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.querySelector('#new_channel_form').onsubmit = () => {
+        console.log("Form Submitted");
         let channel = document.querySelector('#channel_name').value;
         channel_name = channel;
+        console.log("Channel: " + channel);
 
-        // clear input
-        document.querySelector('#channel_name').value = '';
+        document.querySelector('#channel_name').value = ''; // clear input
 
         socket.emit('new_channel', {channel_name: channel_name});
 
@@ -150,7 +145,7 @@ function messageView(channelButton) {
         // add current channel to localStorage
         localStorage.setItem('current_channel', current_channel);
 
-        socket.emit('joinChannel', {
+        socket.emit('join', {
             current_channel: localStorage.getItem('current_channel'),
             display_name: localStorage.getItem('display_name')
         });
@@ -160,7 +155,7 @@ function messageView(channelButton) {
         // deactivate channel class
         channelButton.classList.remove("active");
 
-        socket.emit('leaveChannel', {
+        socket.emit('leave', {
             current_channel: localStorage.getItem('current_channel'),
             display_name: localStorage.getItem('display_name')
         });

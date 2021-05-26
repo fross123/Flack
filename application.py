@@ -1,5 +1,4 @@
-import os
-import datetime
+import time
 
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit, join_room, leave_room
@@ -43,18 +42,21 @@ def new_channel(data):
         channel_list.append(channel_name)
 
         emit("channel_created", {"channel_name": channel_name}, broadcast=True)
-
-@socketio.on('joinChannel')
+        
+@socketio.on('join')
 def on_join(data):
     display_name = data['display_name']
     current_channel = data['current_channel']
-    join_room(current_channel)
+    emit("alert", {"alert": "Test this."})
 
     for message_info in messages:
         if message_info["channel"] == current_channel:
-            emit ("loadMessages", {"message": message_info['message'], "channel": message_info['channel'], "name": message_info['display_name'], "date": message_info['date']})
+            emit("loadMessages", {"message": message_info['message'], "channel": message_info['channel'], "name": message_info['display_name'], "date": message_info['date']})
+    
+    join_room(current_channel)
 
-@socketio.on('leaveChannel')
+
+@socketio.on('leave')
 def on_leave(data):
     display_name = data['display_name']
     current_channel = data['current_channel']
@@ -86,12 +88,13 @@ def new_message(data):
     # If more than 100 messages are saved, then emit alert.
     countMessages = (sum(x.get('channel') == channel for x in messages))
     if countMessages > 99:
-        emit ("alert", {"alert": "You have reached your maximum number of messages on this channel, please delete some in order to send another message"})
+        emit("alert", {"alert": "You have reached your maximum number of messages on this channel, please delete some in order to send another message"})
 
     # If message count is less than or equal to 100 add to list and emit to client.
     elif countMessages <= 99:
         messages.append(message_info)
-        emit("loadMessages", {"message": message, "channel": channel, "name": display_name, "date": dateString}, room=channel)
+        emit("loadMessages", {"message": message, "channel": channel, "name": display_name, "date": dateString}, to=channel)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    socketio.run(app)
+    # app.run(debug=True, host='0.0.0.0')
